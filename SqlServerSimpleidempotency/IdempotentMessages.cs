@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace SqlServerSimpleidempotency
 {
@@ -49,6 +50,30 @@ namespace SqlServerSimpleidempotency
             lock (_processedItems)
                 return _processedItems.Contains(messageId);
         }
+
+        /// <summary>
+        /// Handles action idempotently.
+        /// </summary>
+        /// <param name="uniqueId">A unique identifier that is specific to the work being done</param>
+        /// <param name="action">The action to be done</param>
+        public void HandleIdempotently(string uniqueId, Action action)
+        {
+            try
+            {
+                if (HasMessageBeenProcessed(uniqueId))
+                    return;
+
+                action();
+
+                MarkMessageAsProcessed(uniqueId);
+            }
+            catch
+            {
+                UnMarkMessageAsProcessed(uniqueId);
+                throw;
+            }
+        }
+
     }
 
 }
