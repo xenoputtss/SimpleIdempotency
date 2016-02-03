@@ -12,7 +12,7 @@ namespace SqlServerSimpleidempotency
             //TODO:  Currently this is an inmemory store.  It would be nice to persist this to a central database
             //using (var tx = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             //{
-            //    var connectionString = "TODO";
+            //    var connectionString = "";
             //    using (var conn = new SqlConnection(connectionString))
             //    {
             //        conn.Open();
